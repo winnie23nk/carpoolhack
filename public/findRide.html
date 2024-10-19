@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find a Ride</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css"
+    />
+    <style>
+      #map {
+        height: 400px;
+        margin-top: 20px;
+      }
+      #info {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h2>Find me a ride!!</h2>
+    </header>
+    <main>
+      <form id="rideForm" onsubmit="submitForm(event)">
+        <label for="userName">User Name:</label>
+        <input type="text" id="userName" name="userName" required />
+        <br />
+        <label for="contactNo">Contact No:</label>
+        <input type="tel" id="contactNo" name="contactNo" required />
+        <br />
+        <label for="source">Source:</label>
+        <select name="source" required>
+          <option value="KR Puram">KR Puram</option>
+          <option value="Electronic City">Electronic City</option>
+          <option value="Silk Board">Silk Board</option>
+          <option value="Marathahalli">Marathahalli</option>
+          <option value="Manyata Tech Park">Manyata Tech Park</option>
+          <option value="Hebbal">Hebbal</option>
+          <option value="Sarjapur Road">Sarjapur Road</option>
+          <option value="Bellandur">Bellandur</option>
+          <option value="HSR Layout">HSR Layout</option>
+          <option value="Koramangala">Koramangala</option>
+          <option value="Domlur">Domlur</option>
+          <option value="Indiranagar">Indiranagar</option>
+          <option value="Banashankari">Banashankari</option>
+          <option value="BTM Layout">BTM Layout</option>
+          <option value="Yelahanka">Yelahanka</option>
+          <option value="Mahadevapura">Mahadevapura</option>
+          <option value="Kadubeesanahalli">Kadubeesanahalli</option>
+          <option value="Jayanagar">Jayanagar</option>
+          <option value="Rajajinagar">Rajajinagar</option>
+          <option value="Vijayanagar">Vijayanagar</option>
+          <option value="Ulsoor">Ulsoor</option>
+          <option value="Richmond Town">Richmond Town</option>
+          <option value="MG Road">MG Road</option>
+          <option value="Basavanagudi">Basavanagudi</option>
+          <option value="Peenya">Peenya</option>
+          <option value="Kalyan Nagar">Kalyan Nagar</option>
+          <option value="Frazer Town">Frazer Town</option>
+          <option value="Malleswaram">Malleswaram</option>
+          <option value="Kammanahalli">Kammanahalli</option>
+          <option value="Bannerghatta Road">Bannerghatta Road</option>
+          <option value="Hennur">Hennur</option>
+          <option value="Nagawara">Nagawara</option>
+          <option value="RT Nagar">RT Nagar</option>
+          <option value="Bommanahalli">Bommanahalli</option>
+          <option value="JP Nagar">JP Nagar</option>
+          <option value="Hosur Road">Hosur Road</option>
+          <option value="Jeevan Bima Nagar">Jeevan Bima Nagar</option>
+          <option value="Varthur">Varthur</option>
+          <option value="Sanjay Nagar">Sanjay Nagar</option>
+          <option value="Kengeri">Kengeri</option>
+          <option value="Thanisandra">Thanisandra</option>
+          <option value="HSR BDA Complex">HSR BDA Complex</option>
+          <option value="Hulimavu">Hulimavu</option>
+          <option value="Haralur Road">Haralur Road</option>
+          <option value="Horamavu">Horamavu</option>
+          <option value="Banaswadi">Banaswadi</option>
+          <option value="Vijaya Bank Layout">Vijaya Bank Layout</option>
+          <option value="Kudlu Gate">Kudlu Gate</option>
+          <option value="Cox Town">Cox Town</option>
+          <option value="Yeshwanthpur">Yeshwanthpur</option>
+        </select>
+        <br />
+        <label for="destination">Destination:</label>
+        <select name="destination" required>
+          <option value="KR Puram">KR Puram</option>
+          <option value="Electronic City">Electronic City</option>
+          <option value="Silk Board">Silk Board</option>
+          <option value="Marathahalli">Marathahalli</option>
+          <option value="Manyata Tech Park">Manyata Tech Park</option>
+          <option value="Hebbal">Hebbal</option>
+          <option value="Sarjapur Road">Sarjapur Road</option>
+          <option value="Bellandur">Bellandur</option>
+          <option value="HSR Layout">HSR Layout</option>
+          <option value="Koramangala">Koramangala</option>
+          <option value="Domlur">Domlur</option>
+          <option value="Indiranagar">Indiranagar</option>
+          <option value="Banashankari">Banashankari</option>
+          <option value="BTM Layout">BTM Layout</option>
+          <option value="Yelahanka">Yelahanka</option>
+          <option value="Mahadevapura">Mahadevapura</option>
+          <option value="Kadubeesanahalli">Kadubeesanahalli</option>
+          <option value="Jayanagar">Jayanagar</option>
+          <option value="Rajajinagar">Rajajinagar</option>
+          <option value="Vijayanagar">Vijayanagar</option>
+          <option value="Ulsoor">Ulsoor</option>
+          <option value="Richmond Town">Richmond Town</option>
+          <option value="MG Road">MG Road</option>
+          <option value="Basavanagudi">Basavanagudi</option>
+          <option value="Peenya">Peenya</option>
+          <option value="Kalyan Nagar">Kalyan Nagar</option>
+          <option value="Frazer Town">Frazer Town</option>
+          <option value="Malleswaram">Malleswaram</option>
+          <option value="Kammanahalli">Kammanahalli</option>
+          <option value="Bannerghatta Road">Bannerghatta Road</option>
+          <option value="Hennur">Hennur</option>
+          <option value="Nagawara">Nagawara</option>
+          <option value="RT Nagar">RT Nagar</option>
+          <option value="Bommanahalli">Bommanahalli</option>
+          <option value="JP Nagar">JP Nagar</option>
+          <option value="Hosur Road">Hosur Road</option>
+          <option value="Jeevan Bima Nagar">Jeevan Bima Nagar</option>
+          <option value="Varthur">Varthur</option>
+          <option value="Sanjay Nagar">Sanjay Nagar</option>
+          <option value="Kengeri">Kengeri</option>
+          <option value="Thanisandra">Thanisandra</option>
+          <option value="HSR BDA Complex">HSR BDA Complex</option>
+          <option value="Hulimavu">Hulimavu</option>
+          <option value="Haralur Road">Haralur Road</option>
+          <option value="Horamavu">Horamavu</option>
+          <option value="Banaswadi">Banaswadi</option>
+          <option value="Vijaya Bank Layout">Vijaya Bank Layout</option>
+          <option value="Kudlu Gate">Kudlu Gate</option>
+          <option value="Cox Town">Cox Town</option>
+          <option value="Yeshwanthpur">Yeshwanthpur</option>
+        </select>
+        <br />
+        <label for="vehicleType">Vehicle Type:</label>
+        <select name="vehicleType" required>
+          <option value="car">Car</option>
+          <option value="sedan">Sedan</option>
+          <option value="bike">Bike</option>
+        </select>
+        <br />
+        <button type="submit">Find Ride</button>
+      </form>
+
+      <div id="map"></div>
+      <div id="info">
+        <h3>Booking Information</h3>
+        <p id="distance"></p>
+      </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script>
+      const getCoordinates = async (location) => {
+        const apiKey = "630ec66719de4a3bbc1c49a630b5f1e1";
+        const response = await fetch(
+          `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
+            location
+          )}&key=${apiKey}`
+        );
+        const data = await response.json();
+
+        if (data.status.code === 200 && data.results.length > 0) {
+          return data.results[0].geometry;
+        } else {
+          throw new Error("Could not fetch coordinates");
+        }
+      };
+
+      const submitForm = async (event) => {
+        event.preventDefault();
+        const userName = document.getElementById("userName").value;
+        const contactNo = document.getElementById("contactNo").value;
+        const source = document.querySelector('select[name="source"]').value;
+        const destination = document.querySelector(
+          'select[name="destination"]'
+        ).value;
+        const vehicleType = document.querySelector(
+          'select[name="vehicleType"]'
+        ).value;
+
+        try {
+          const sourceCoords = await getCoordinates(source);
+          const destinationCoords = await getCoordinates(destination);
+
+          const response = await fetch("/find-ride", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userName,
+              contactNo,
+              source: sourceCoords,
+              sourceAddress: source,
+              destination: destinationCoords,
+              destinationAddress: destination,
+              vehicleType,
+            }),
+          });
+
+          const result = await response.json();
+          alert(result.message);
+          if (response.ok) {
+            // Now show the map with the route
+            showMap(sourceCoords, destinationCoords);
+            setTimeout(() => {
+              window.location.href = "pmatch.html";
+            }, 2000); // Redirects after 2 seconds
+          }
+        } catch (error) {
+          alert("Error: " + error.message);
+        }
+      };
+
+      // Function to display the map with route
+      const showMap = (start, end) => {
+        const map = L.map("map").setView([start.lat, start.lng], 12);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "© OpenStreetMap contributors",
+        }).addTo(map);
+
+        L.Routing.control({
+          waypoints: [
+            L.latLng(start.lat, start.lng),
+            L.latLng(end.lat, end.lng),
+          ],
+          routeWhileDragging: true,
+          createMarker: () => null, // Disable markers if needed
+        }).addTo(map);
+
+        // Fetch route distance from OSRM
+        const osrmUrl = `http://router.project-osrm.org/route/v1/driving/${start.lng},${start.lat};${end.lng},${end.lat}?overview=full`;
+
+        fetch(osrmUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.routes.length > 0) {
+              const distance = (data.routes[0].distance / 1000).toFixed(2);
+              document.getElementById(
+                "distance"
+              ).innerText = `Distance: ${distance} km`;
+            } else {
+              document.getElementById("distance").innerText = "No route found.";
+            }
+          })
+          .catch((error) => console.error("Error fetching route:", error));
+      };
+    </script>
+  </body>
+</html>

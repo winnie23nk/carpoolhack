@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taker Match</title>
+    <style>
+      /* Reset default styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif; /* Font style */
+        background-color: #f4f4f4; /* Light background color */
+        color: #333; /* Dark text color */
+        line-height: 1.6; /* Line height for better readability */
+        display: flex; /* Flexbox for centering */
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center; /* Center horizontally */
+        justify-content: center; /* Center vertically */
+        height: 100vh; /* Full viewport height */
+        text-align: center; /* Center text */
+        padding: 20px; /* Padding around the body */
+      }
+
+      header {
+        background-color: #99cd27; /* Green background for header */
+        color: white; /* White text */
+        padding: 10px 20px; /* Padding around header */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        margin-bottom: 20px; /* Space below header */
+      }
+
+      .info-container {
+        background-color: white; /* White background for info */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        padding: 20px; /* Padding around info container */
+        width: 300px; /* Fixed width */
+        text-align: left; /* Left align text */
+      }
+
+      .info-item {
+        margin-bottom: 10px; /* Space between items */
+      }
+
+      .info-item strong {
+        color: #99cd27; /* Green for labels */
+      }
+
+      button {
+        background-color: #4caf50; /* Green background */
+        border: none; /* Remove border */
+        color: white; /* White text color */
+        padding: 10px 20px; /* Padding around the text */
+        font-size: 16px; /* Font size */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s; /* Smooth background change */
+        margin-top: 20px; /* Space above the button */
+      }
+
+      button:hover {
+        background-color: #45a049; /* Darker green on hover */
+      }
+    </style>
+    <script>
+      const fetchMatch = async () => {
+        const response = await fetch("/get-taker-match");
+        const match = await response.json();
+        if (response.ok) {
+          document.getElementById("userName").innerText =
+            match.userName || "N/A";
+          document.getElementById("contactNo").innerText =
+            match.contactNo || "N/A";
+          document.getElementById("sourceAddress").innerText =
+            match.sourceAddress || "N/A";
+          document.getElementById("destinationAddress").innerText =
+            match.destinationAddress || "N/A";
+          document.getElementById("vehicleType").innerText =
+            match.vehicleType || "N/A";
+
+          document.getElementById(
+            "cost"
+          ).innerText = `Cost Taken: ₹${match.costTaken}`;
+          document.getElementById(
+            "emission"
+          ).innerText = `CO2 Emission Reduced: ${match.co2EmissionReduced.toFixed(
+            2
+          )} kg`;
+
+          // Save the matched taker ID for booking
+          document
+            .getElementById("book-button")
+            .setAttribute("data-id", match.id);
+        } else {
+          document.getElementById("userName").innerText = "N/A";
+          document.getElementById("contactNo").innerText = "N/A";
+          document.getElementById("sourceAddress").innerText = "N/A";
+          document.getElementById("destinationAddress").innerText = "N/A";
+          document.getElementById("vehicleType").innerText = "N/A";
+          document.getElementById("cost").innerText = "";
+          document.getElementById("emission").innerText = "";
+        }
+      };
+
+      const bookTaker = async () => {
+        const takerId = document
+          .getElementById("book-button")
+          .getAttribute("data-id");
+        if (!takerId) {
+          alert("No taker selected to book.");
+          return;
+        }
+
+        try {
+          const response = await fetch("/book-taker", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ takerId }),
+          });
+
+          if (response.ok) {
+            alert("Taker booked successfully");
+            // Optionally, refresh the match info or redirect
+            fetchMatch(); // Refresh matches
+          } else {
+            const result = await response.json();
+            alert(result.message);
+          }
+        } catch (error) {
+          alert("Error: " + error.message);
+        }
+      };
+
+      window.onload = fetchMatch;
+    </script>
+  </head>
+  <body>
+    <h2>Matched Taker</h2>
+    <main>
+      <div class="info-container">
+        <div class="info-item">
+          <strong>User Name:</strong> <span id="userName"></span>
+        </div>
+        <div class="info-item">
+          <strong>Contact Number:</strong> <span id="contactNo"></span>
+        </div>
+        <div class="info-item">
+          <strong>Source Address:</strong> <span id="sourceAddress"></span>
+        </div>
+        <div class="info-item">
+          <strong>Destination Address:</strong>
+          <span id="destinationAddress"></span>
+        </div>
+        <div class="info-item">
+          <strong>Vehicle Type:</strong> <span id="vehicleType"></span>
+        </div>
+      </div>
+      <p id="cost"></p>
+      <p id="emission"></p>
+      <button id="book-button" onclick="bookTaker()">Book</button>
+    </main>
+  </body>
+</html>

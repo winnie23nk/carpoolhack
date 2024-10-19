@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bengaluru Carpooling Service</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif; /* Set a default font */
+        display: flex; /* Use Flexbox for centering */
+        flex-direction: column; /* Stack children vertically */
+        justify-content: center; /* Center vertically */
+        align-items: center; /* Center horizontally */
+        height: 100vh; /* Full viewport height */
+        margin: 0; /* Remove default margin */
+        background-color: #f0f0f0; /* Light grey background */
+      }
+
+      h1 {
+        color: #333; /* Darker text color for better contrast */
+        margin-bottom: 20px; /* Space below the title */
+        text-align: center; /* Center the title text */
+      }
+
+      button {
+        background-color: #4caf50; /* Green background */
+        border: none; /* Remove border */
+        color: white; /* White text color */
+        padding: 15px 32px; /* Padding around the text */
+        text-align: center; /* Center text */
+        text-decoration: none; /* No underline */
+        display: inline-block; /* Align buttons */
+        font-size: 16px; /* Font size */
+        margin: 10px; /* Space between buttons */
+        cursor: pointer; /* Pointer cursor on hover */
+        border-radius: 5px; /* Rounded corners */
+        transition: background-color 0.3s; /* Smooth background change */
+      }
+
+      button:hover {
+        background-color: #45a049; /* Darker green on hover */
+      }
+    </style>
+  </head>
+  <body>
+    <img src="tr.jpeg" height="180px" />
+    <h1>Bengaluru Carpooling Service</h1>
+    <button onclick="window.location.href='findRide.html'">
+      Find me a ride!
+    </button>
+    <button onclick="window.location.href='provideSer.html'">
+      Provide service
+    </button>
+    <button onclick="window.location.href='rto.html'">
+      Generate your carpooling sticker
+    </button>
+  </body>
+</html>

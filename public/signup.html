@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+      <label for="aadharId">Aadhar ID:</label>
+      <input type="text" id="aadharId" name="aadharId" required />
+      <br />
+      <label for="companyName">Company Name:</label>
+      <input type="text" id="companyName" name="companyName" required />
+      <br />
+      <label for="employeeId">Employee ID:</label>
+      <input type="text" id="employeeId" name="employeeId" required />
+      <br />
+      <label for="vehicleNumber">Vehicle Number:</label>
+      <input type="text" id="vehicleNumber" name="vehicleNumber" required />
+      <br />
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required />
+      <br />
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
+      <br />
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+
+    <script>
+      document.getElementById("signupForm").onsubmit = async (e) => {
+        e.preventDefault();
+        const data = {
+          aadharId: e.target.aadharId.value,
+          companyName: e.target.companyName.value,
+          employeeId: e.target.employeeId.value,
+          vehicleNumber: e.target.vehicleNumber.value,
+          username: e.target.username.value,
+          password: e.target.password.value,
+        };
+
+        const response = await fetch("/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        alert(result.message);
+        if (response.ok) {
+          window.location.href = "login.html";
+        }
+      };
+    </script>
+  </body>
+</html>
